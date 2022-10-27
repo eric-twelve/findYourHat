@@ -18,7 +18,7 @@ class Field {
       let y= 0;
       let x= 0;
       
-      this.print()
+      this.print();
       
 
       while(this.hatAndHole[y][x]=== fieldCharacter || this.hatAndHole[y][x]=== pathCharacter ){
@@ -63,6 +63,7 @@ class Field {
     }else if(this.hatAndHole[y][x] === fieldCharacter){
       this.field[y][x] = pathCharacter;
     }
+    
     this.print()
     
     }
@@ -99,7 +100,6 @@ class Field {
       }
     }
     newField[0][0]= pathCharacter;
-    
     return newField;
   }
 // Generate a random field static for can access with call 
@@ -114,40 +114,43 @@ class Field {
         randomField[i].push(fieldCharacter)
       }
     }
-  // Create a holes´
-    let countHoles= 0;
+  // Create a holess
     
-    while(countHoles < holes){
       let holesY= Math.floor(Math.random() * height);
-      let holesX= Math.floor(Math.random()* width + 1);
-      if(randomField[holesY][holesX] !== hole ){
-        randomField[holesY][holesX] === hole;
-      }else{
-        holesY= Math.floor(Math.random() * height);
-        holesX= Math.floor(Math.random()* width + 1);  
-      } 
-         
+      let holesX= Math.floor(Math.random()* width);
+      
+      for(let k= holes; k > 0; k--){
+        if(randomField[holesY][holesX] !== hole && randomField[holesY][holesX]=== randomField[0][0]){
+          randomField[holesY][holesX]= hole;
+        }else{
+          holesY= Math.floor(Math.random() * height);
+          holesX= Math.floor(Math.random()* width);
+        }
       }
+    // Create a 1 field with a hat
+    while(randomField[holesY][holesX]=== hole){
+      holesY= Math.floor(Math.random() * height);
+      holesX= Math.floor(Math.random()* width);
+    }
+    randomField[holesY][holesX]= hat;
     return randomField;
-  }
-}
+    }
+    
+    }
 
-
-
+    
 const hatAndHole= [
   ['*', '░', 'O'],
   ['░', 'O', '░'],
   ['░', '^', '░'],
 ];
 
-// Create a field in blank with a field character en [0][0]
-
 
 const fieldBlank= Field.generateBlanckField(3,3);
-const fieldRandom= Field.generateRandomHatAndHoles(3,3,3)
+const fieldRandom= Field.generateRandomHatAndHoles(3,3,1);
 
-let myField= new Field(hatAndHole, fieldBlank)
+let myField= new Field(fieldRandom, fieldBlank);
 
-myField.playGame()
+myField.playGame();
 
 
